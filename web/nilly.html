@@ -1,5 +1,45 @@
 <head>
 <title>Nilly's Realm</title>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '589022264565891',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+
+    function onLogin(response) {
+  if (response.status == 'connected') {
+    FB.api('/me?fields=first_name', function(data) {
+      var welcomeBlock = document.getElementById('fb-welcome');
+      welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
+    });
+  }
+}
+
+FB.getLoginStatus(function(response) {
+  // Check login status on load, and if the user is
+  // already logged in, go directly to the welcome message.
+  if (response.status == 'connected') {
+    onLogin(response);
+  } else {
+    // Otherwise, show Login dialog first.
+    FB.login(function(response) {
+      onLogin(response);
+    }, {scope: 'user_friends, email'});
+  }
+});
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+   
+</script>
 <link rel="shortcut icon" href="http://nillysrealm.com/forum/favicon.ico" />
 <style>
 body {
@@ -38,7 +78,7 @@ body {
 }
 </style>
 <script>
-var version = "4";
+var version = "5";
 </script>
 <script>
 function StartWindow() {
@@ -58,7 +98,7 @@ function NewTab() {
 <noscript>
   <a href="http://www.chrome.com/">We recommend you to get a enable JavaScript or update your web browser!</a>
 </noscript>
-<a href="fullscreen.html"><img src="fullscreen.png" class="tc"/></a>
+<p id="fb-welcome">Nilly's Realm for Facebook</p><a href="fullscreen.html"><img src="fullscreen.png" class="tc"/></a>
 <div id="content">
 </div>
 <center>
